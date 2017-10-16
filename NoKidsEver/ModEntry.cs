@@ -5,6 +5,8 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Events;
+using StardewValley.Menus;
+using System.Collections.Generic;
 
 namespace NoKidsEver
 {    /// <summary>The mod entry point.</summary>
@@ -30,31 +32,13 @@ namespace NoKidsEver
             if (isBabyQuestion && Game1.activeClickableMenu is DialogueBox dialogue)
             {
                 // answer question
-                Response no = this.Reflection.GetPrivateValue<List<Response>>(dialogue, "responses")[1];
+                Response no = this.Helper.Reflection.GetPrivateValue<List<Response>>(dialogue, "responses")[1];
                 Game1.currentLocation.answerDialogue(no);
                 dialogue.closeDialogue();
 
                 // reverse penalty
-                // TODO: look at the game code to see what the friendship penalty is,
-                //       and just add an equivalent number of points back.
-            }
-
-
-
-
-
-            /*if (isBabyQuestion)
-            {
-                this.Monitor.Log("Skipping baby question...");
-                Game1.farmEvent = null;
-                Game1.messagePause = false;
-                this.Helper.Reflection.GetPrivateField<GameLocation.afterQuestionBehavior>
-            (Game1.currentLocation, "afterQuestion").SetValue(null);
-                Game1.objectDialoguePortraitPerson = null;
-                Game1.dialogueUp = false;
-                Game1.player.CanMove = true;
-                Game1.activeClickableMenu.exitThisMenu();*/
-        }
+                // TODO: look at the game code to see what the friendship penalty is, and just add an equivalent number of points back.
+            }            
         }  
         /* Just my little "thank you" to Pathos for the INSANE level of patience displayed
          * during the countless hours of me pestering them on discord with questions, and all
