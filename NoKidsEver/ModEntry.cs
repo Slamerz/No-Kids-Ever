@@ -24,25 +24,19 @@ namespace NoKidsEver
 
         public void GameEvents_UpdateTick(object sender, EventArgs e)
         {
-            bool isBabyQuestion =
-                Game1.farmEvent is QuestionEvent
-            && this.Helper.Reflection.GetPrivateValue<int>(Game1.farmEvent, "whichQuestion") ==
-            QuestionEvent.pregnancyQuestion;
+            //Check if you're being asked the question.
+            if (!IsBabyQuestion() || !(Game1.activeClickableMenu is DialogueBox dialogue)) return;
+            // answer question
+            Response no = Helper.Reflection.GetField<List<Response>>(dialogue, "response").GetValue()[1];
+            Game1.currentLocation.answerDialogue(no);
+            dialogue.closeDialogue();
+        }
 
-            if (isBabyQuestion && Game1.activeClickableMenu is DialogueBox dialogue)
-            {
-                // answer question
-                Response no = this.Helper.Reflection.GetPrivateValue<List<Response>>(dialogue, "responses")[1];
-                Game1.currentLocation.answerDialogue(no);
-                dialogue.closeDialogue();
-
-                // reverse penalty
-                // TODO: look at the game code to see what the friendship penalty is, and just add an equivalent number of points back.
-            }            
-        }  
+        private bool IsBabyQuestion() => Game1.farmEvent is QuestionEvent && 
+                                         Helper.Reflection.GetField<int>(Game1.farmEvent, "whichQuestion").GetValue() == QuestionEvent.pregnancyQuestion;
         /* Just my little "thank you" to Pathos for the INSANE level of patience displayed
-         * during the countless hours of me pestering them on discord with questions, and all
-         * the explanations provided. It could not have been done, by me at least, without their
-         * help. Thank you. :D */
+* during the countless hours of me pestering them on discord with questions, and all
+* the explanations provided. It could not have been done, by me at least, without their
+* help. Thank you. :D */
     }
 }
