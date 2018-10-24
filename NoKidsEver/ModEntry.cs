@@ -30,7 +30,6 @@ namespace NoKidsEver
 
         private void Answer(DialogueBox dialogue)
         {
-            Monitor.Log("She asked, I said no");
             Response no = new Response("Not", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_No"));
             Game1.currentLocation.answerDialogue(no);
             dialogue.closeDialogue();
